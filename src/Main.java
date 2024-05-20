@@ -9,18 +9,30 @@ public class Main {
 
         try {
             String[] parts = input.split(" ");
-            if (parts.length != 3 && parts.length != 4) {
+            if (parts.length != 3 && parts.length != 4)
+            {
                 throw new Exception("Неправильный формат выражения");
             }
 
-            String num1 = parts[0].substring(1, parts[0].length() -1);
-            String num2 = parts[2].substring(1);
-            String num3 = parts[2];
+            String num1 = parts[0].replace("\"", "");
+            String num2 = parts[2].replace("\"", "");
+            String num3 = parts[2].replace("\"", "");
+
+            char minus = '-';
             char operation = parts[1].charAt(0);
+            String result;
 
-            String result = calculate(num1, num2, num3, operation);
+            result = (operation == '+' || operation == '*' || operation == '/') ? calculate(num1, num2, num3, operation) : calculate(num1, num2, num3, '-');
 
-            if (result.length() > 40) {
+
+
+            if (operation == '*' || operation == '/')
+            {
+                if (parts[1].contains("\"")) throw new Exception("Нужно делить или умножать на число");
+            }
+
+            if (result.length() > 40)
+            {
                 result = result.substring(0, 40) + "...";
             }
 
@@ -31,29 +43,39 @@ public class Main {
     }
 
     public static String calculate(String num1, String num2, String num3, char operation) throws Exception {
+        String result = "";
         switch (operation) {
             case '+':
-                return "\"" + num1 + num2;
+                result  = "\"" + num1 + num2 + "\"";
+                break;
             case '-':
-                if (num1.contains(num2)) {
-                    return "\"" + num1.replace(num2, "") + "\"";
+                if (num1.contains(num2))
+                {
+                    result = "\"" + num1.replace(num2, "") + "\"";
                 } else {
-                    return "\"" + num1  + "\"";
+                    result = "\"" + num1  + "\"";
                 }
+                break;
             case '*':
                 int s1 = Integer.parseInt(num3);
-                if (s1 < 1 || s1 > 10) {
+                if (s1 < 1 || s1 > 10)
+                {
                     throw new Exception("Число должно быть от 1 до 10");
                 }
-                return "\"" + num1.repeat(s1) + "\"";
+                result = "\"" + num1.repeat(s1) + "\"";
+                break;
             case '/':
                 s1 = Integer.parseInt(num3);
-                if (s1 < 1 || s1 > 10) {
+                if (s1 < 1 || s1 > 10)
+                {
                     throw new Exception("Число должно быть от 1 до 10");
                 }
-                return "\"" + num1.substring(0, s1) + "\"";
-            default:
-                throw new Exception("Неподдерживаемая операция");
+                result = "\"" + num1.substring(0, s1) + "\"";
+                break;
+//            default:
+//                throw new Exception("Неподдерживаемая операция");
         }
+        return result;
     }
+
 }
