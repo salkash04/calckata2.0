@@ -72,8 +72,8 @@ public class Main {
                 }
                 result = "\"" + num1.substring(0, s1) + "\"";
                 break;
-//            default:
-//                throw new Exception("Неподдерживаемая операция");
+            default:
+                throw new Exception("Неподдерживаемая операция");
         }
         return result;
     }
